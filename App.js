@@ -9,18 +9,33 @@ export default class App extends React.Component {
         this.state = {
             points: 0,
             gameOver: false,
+            timeLeft:10,
         };
     }
+    componentDidMount() {
+        this.timer = setInterval(this.tick, 1000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
+    }
+
+    tick = () => {
+       
+        this.setState(prevState => ({ timeLeft: prevState.timeLeft - 1 }), () => {
+            if (this.state.timeLeft === 0) {
+
+                this.isGameOver();
+                clearInterval(this.timer);
+            }
+        });
+    };
 
     isGameOver = (points) => {
        // this.setState({ gameOver: true, points });
         Alert.alert('Game Over',
-            `You hit a mine! Your points: ${this.state.points}`,
+            `You hit a mine! \n Your points: ${this.state.points}`,
             [{ text: 'OK', onPress: () => { this.setState({ gameOver: true }) } }]);
-    };
-
-    generateBoard = () => {
-
     };
 
     resetGame = () => {
@@ -30,6 +45,10 @@ export default class App extends React.Component {
             points: 0,
             gameOver: false,
             flippedCells: new Set(), 
+            timeLeft:10,
+        }, () => {
+            clearInterval(this.timer);
+            this.timer = setInterval(this.tick, 1000);
         });
         
     };
@@ -52,6 +71,7 @@ export default class App extends React.Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.points}>Points: {this.state.points}</Text>
+                <Text style={styles.timer}>Time Left: {this.state.timeLeft}</Text>
                 <Board
                     gameOver={this.state.gameOver}
                     onGameOver={this.isGameOver}
@@ -74,6 +94,10 @@ const styles = StyleSheet.create({
     points: {
         fontSize: 20,
         marginBottom: 20,
+    },
+    timer: {
+        fontSize: 20,
+        marginButtom: 10,
     },
 });
 
