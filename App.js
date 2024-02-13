@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Alert, Button } from 'react-native';
 import Board from './components/Board';
+import Cell from './components/Cell';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -11,16 +12,26 @@ export default class App extends React.Component {
         };
     }
 
-    isGameOver = () => {
-        this.setState({ gameOver: true });
-        Alert.alert('Game Over', 'You hit a mine!', [{ text: 'OK' }]);
+    isGameOver = (points) => {
+       // this.setState({ gameOver: true, points });
+        Alert.alert('Game Over',
+            `You hit a mine! Your points: ${this.state.points}`,
+            [{ text: 'OK', onPress: () => { this.setState({ gameOver: true }) } }]);
+    };
+
+    generateBoard = () => {
+
     };
 
     resetGame = () => {
+
+        
         this.setState({
             points: 0,
             gameOver: false,
+            flippedCells: new Set(), 
         });
+        
     };
 
     updatePoints = () => {
@@ -28,10 +39,11 @@ export default class App extends React.Component {
     };
 
     bailOut = () => {
+       
         Alert.alert(
-            'Bail Out',
+            'Bailed Out',
             `Your points: ${this.state.points}`,
-            [{ text: 'OK', onPress: () => { this.resetGame() } }],
+            [{ text: 'OK', onPress: () => { this.setState({ gameOver: true }) } }],
             { cancelable: false }
         );
     };

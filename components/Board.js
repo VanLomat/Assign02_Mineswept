@@ -9,12 +9,12 @@ export default class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            board: this.initializeBoard(),
+            board: this.initBoard(),
             flippedCells: new Set(),
         };
     }
 
-    initializeBoard = () => {
+    initBoard = () => {
         const board = [];
         for (let i = 0; i < BOARD_SIZE; i++) {
             const row = [];
@@ -55,44 +55,17 @@ export default class Board extends React.Component {
     );
   };
 
-//handleCellPress = (row, col) => {
-//    if (this.props.gameOver || !this.state.board[row][col].hidden) return;
 
-//    const cell = this.state.board[row][col];
-//    const updatedFlippedCells = new Set(this.state.flippedCells);
-//    updatedFlippedCells.add('${row}-${col}');
-//    this.setState({ flippedCells: updatedFlippedCells });
-
-//    this.renderBoard();
-
-//    if (cell.value === -1) {
-//        this.props.onGameOver();
-//        const updateBoard = this.state.board.map((rowArr) =>
-//            rowArr.map((cell, colIndex) => ({
-//                ...cell,
-//                hidden: cell.value === -1 ? false : cell.hidden,
-//            }))
-//        );
-//        this.setState({ board: updatedBoard });
-
-//    } else {
-//        this.props.updatePoints();
-//        const updatedBoard = [...this.state.board];
-//        updatedBoard[row][col].value = this.props.points;
-//         updatedBoard[row][col].hidden = false;
-//        this.setState({ board: updatedBoard });
-//    }
-//};
 
     handleCellPress = (row, col) => {
         if (this.props.gameOver || !this.state.board[row][col].hidden) return;
         const cell = this.state.board[row][col];
         const updatedRevealedCells = new Set(this.state.revealedCells);
-        updatedRevealedCells.add(`${row}-${col}`);
+        updatedRevealedCells.add('${row}-${col}');
         this.setState({ revealedCells: updatedRevealedCells });
 
         if (cell.value === -1) {
-            this.props.onGameOver();
+            this.props.onGameOver(this.props.points);
             const updatedBoard = this.state.board.map((rowArr) =>
                 rowArr.map((cellObj, colIndex) => ({
                     ...cellObj,
@@ -100,7 +73,8 @@ export default class Board extends React.Component {
                 }))
             );
             this.setState({ board: updatedBoard });
-        } else {
+        }
+        else {
             this.props.updatePoints();
             const updatedBoard = [...this.state.board];
             updatedBoard[row][col].value = this.props.points;
@@ -108,6 +82,13 @@ export default class Board extends React.Component {
             this.setState({ board: updatedBoard });
         }
     };
+
+
+
+    
+    // change here
+   
+    // change here
  componentDidUpdate(prevProps) {
        if (!prevProps.gameOver && this.props.gameOver) {
            
@@ -116,9 +97,10 @@ export default class Board extends React.Component {
      }
 
  resetBoard = () => {
-       const newBoard = this.initializeBoard();
+       const newBoard = this.initBoard();
       this.setState({ board: newBoard });
-      this.props.onReset();
+     this.props.onReset();
+
      };
 
 

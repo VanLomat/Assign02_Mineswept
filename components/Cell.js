@@ -12,9 +12,10 @@ export default function Cell({ value, hidden, revealed, gameOver, onReveal }) {
     if (!hidden && revealed) {
         if (value === -1) {
             content = 'b';
+            
         } else if (value > 0) {
             content = value;
-            cellStyle = [styles.cell, styles.bombCell];
+            
         }
     }
 
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     disabledCell: {
-        backgroundColor: '#ccc', // Adjusted color for disabled cells
+        backgroundColor: '#FFF', // Adjusted color for disabled cells
     },
 
     bombCell: {
